@@ -1,0 +1,44 @@
+<!-- 컨트롤 슬래쉬 하면 주석처리됨! 한번 더 하면 주석 풀림 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!--비율 맞춰주기-->
+<!--    <meta http-equiv="Compatible" content="no-cache"/>-->
+    <title>Plogging</title>
+    <!--폰트 및 아이콘 선언-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Merriweather:ital,wght@1,700&family=Song+Myung&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous"> <!--css 파일 연결-->
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <img src="../static/logo.png" alt="">
+        <!--홈키 아이콘 넣기 (fontawesome) => flex구조로 -->
+        <button>
+            <i class="fas fa-home"></i><span>Home</span>
+        </button>
+    </header>
+    <section class="headImg">
+        <img src="../static/plog_pic_origin.jpg" alt="">
+    </section>
+    <div class="wrapper">
+        <form class="form-signin">
+            <h1 class="form-signin-heading">로그인</h1>
+            <input type="text" class="form-control" name="username" placeholder="아이디" required="" autofocus="" />
+            <input type="password" class="form-control" name="password" placeholder="비밀번호" required=""/>
+            <h2></h2>
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+            </label>
+            <h2></h2>
+            <button class="btnSubmit" type="submit">Login</button>
+        </form>
+    </div>
+
+</body>
+</html>
