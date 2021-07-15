@@ -4,32 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!--비율 맞춰주기-->
 <!--    <meta http-equiv="Compatible" content="no-cache"/>-->
-    <title>Plogging</title>
     <!--아이콘 선언-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous"> <!--css 파일 연결-->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="map.css">
-    <script src="map.js" defer></script>
-    <script src="main.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/map.css') }}">
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/map.js') }}" defer></script>
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!--카카오지도-->
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3a35bbfba1843e8a4f5ecdf6005debf1"></script>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3a35bbfba1843e8a4f5ecdf6005debf1&libraries=services,clusterer,drawing"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=3a35bbfba1843e8a4f5ecdf6005debf1"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=3a35bbfba1843e8a4f5ecdf6005debf1&libraries=services,clusterer,drawing"></script>
 
+    <title>Plogging</title>
 </head>
 
 <body>
-    <header>
-        <img src="../static/logo.png" alt="">
+    <div class="header">
+        <img class="ploggingimg" src="../static/logo.png" alt="">
         <!--홈키 아이콘 넣기 (fontawesome) => flex구조로 -->
-        <button>
-            <i class="fas fa-home"></i><span>Home</span>
-        </button>
-    </header>
+        <div class="headerBtns">
+            <button onclick="location.href='index.html';" type="button" id="toHome">
+                <i class="fas fa-search-location"></i><span>Maps</span>
+            </button>
+            <button onclick="location.href='main.html';" type="button" >
+            <i class="fas fa-edit"></i><span>p-logging</span>
+            </button>
+        </div>
+    </div>
     <section class="headImg">
         <img src="../static/main_title_img.svg" alt="">
+        <div class="show_weather" id="show_weather"></div>
+
     </section>
     <div class="newLog">
         <div class="up">
@@ -50,54 +62,59 @@
                     </div>
                 </div>
             </div>
+
             <div class="loginfo">
                 <form class="form-log">
+                    <h2 id="tag"></h2>
+                    <br>
+<!--                    <input type="tag" id="tag" class="form-log-ctrl" name="hashtag" placeholder="" required=""/>-->
                     <h3>제목</h3>
-                    <input type="text" class="form-log-ctrl" name="username" placeholder="제목" required="" autofocus="" />
-                    <h3>태그</h3>
-                    <input type="tag" class="form-log-ctrl" name="hashtag" placeholder="#태그" required=""/>
+                    <input type="text" id="title" class="form-log-ctrl" name="username" placeholder="제목" required="" autofocus="" />
                     <h3>내용</h3>
-                    <input type="content" class="form-log-ctrl" name="contents" placeholder="내용" required=""/>
-                    <div class="buttonContainer">
-                        <div class="submitButton" id="submitButton">
+                    <input type="content" id="content" class="form-log-ctrl" name="content" placeholder="내용" required=""/>
+                    <div onclick="postingPost()" type=button class="buttonContainer">
+                        <div  class="submitButton" id="submitButton">
                             SUBMIT</div>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="map_wrap">
-            <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
-            <div id="menu_wrap" class="bg_white">
-                <div class="option">
-                    <div>
-                        <form onsubmit="searchPlaces(); return false;">
-                            키워드 : <input type="text" value="어디로 걸어볼까요" id="keyword" size="15">
-                            <button type="submit">검색하기</button>
-                        </form>
-                    </div>
-                </div>
-                <hr>
-                <ul id="placesList"></ul>
-                <div id="pagination"></div>
-            </div>
-        </div>
+<!--        <div class="map_wrap">-->
+<!--            <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>-->
+<!--            <div id="menu_wrap" class="bg_white">-->
+<!--                <div class="option">-->
+<!--                    <div>-->
+<!--                        <form onsubmit="searchPlaces(); return false;">-->
+<!--                            키워드 : <input type="text" value="어디로 걸어볼까요" id="keyword" size="15">-->
+<!--                            <button type="submit">검색하기</button>-->
+<!--                        </form>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <hr>-->
+<!--                <ul id="placesList"></ul>-->
+<!--                <div id="pagination"></div>-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <!--<div class="down">
-            <div class="topnav">
-                <input type="text" id="keyword" name="searching" placeholder="Search">
-                <button class="searchButton" id="searchBtn">
-                    SEARCH</button>
-            </div>
-            <div class="newMap" id="newmap">
-            </div>
-        </div>-->
+<!--        <div class="down">-->
+<!--            <div class="topnav">-->
+<!--                <input type="text" id="keyword" name="searching" placeholder="Search">-->
+<!--                <button class="searchButton" id="searchBtn">-->
+<!--                    SEARCH</button>-->
+<!--            </div>-->
+<!--            <div class="newMap" id="newmap">-->
+<!--            </div>-->
+<!--        </div>-->
 
     </div>
-    <div class="plogs">
-        <div class="image-show" id="image-show"></div>
-        <div class="beforeloginfo">
+    <div class="card-deck">
 
-        </div>
     </div>
+<!--    <div class="plogs">-->
+<!--        <div class="each_plog">-->
+<!--            <div class="image-show" id="image-show"></div>-->
+<!--            <div class="plogInfo"></div>-->
+<!--        </div>-->
+<!--    </div>-->
 </body>
 </html>
