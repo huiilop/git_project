@@ -157,7 +157,7 @@ button:focus{
 .newLog{
     display: block;
     margin:20px auto;
-    height: 800px;
+    height: 400px;
     width : 1000px; /*640px;*/
     border: 1px solid rgba(0,0,0,0.1);
     box-shadow: 3px 3px 5px grey;
@@ -357,25 +357,35 @@ button:focus{
 }
 
 .plogs{
-    display: flex;
+    display: block;
     justify-content: center;
     margin: 10px auto;
 }
 
-.image-show{
-    width: 50%;
-    height: 80%;
-    /*background: red;*/
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 10px;
-    padding: 5px 5px;
-}
 .each_plog{
-    width: 1000px;
-    height : 500px;
-    margin : 10px 10px;
-    box-shadow: 3px 3px 5px grey;
+    width : 1000px;
+    display: block;
+    justify-content: center;
+    padding : 50px 0px;
+    margin: 0 auto;
 }
+
+
+
+/*.image-show{*/
+/*    width: 50%;*/
+/*    height: 80%;*/
+/*    !*background: red;*!*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    margin: 10px 10px;*/
+/*    padding: 5px 5px;*/
+/*}*/
+/*.each_plog{*/
+/*    width: 1000px;*/
+/*    height : 500px;*/
+/*    margin : 10px 10px;*/
+/*    box-shadow: 3px 3px 5px grey;*/
+/*}*/
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!--비율 맞춰주기-->
 <!--    <meta http-equiv="Compatible" content="no-cache"/>-->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <!--아이콘 선언-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous"> <!--css 파일 연결-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
@@ -46,7 +47,7 @@
     <div class="newLog">
         <div class="up">
             <div class="picture">
-                <div class="image-upload" id="image-upload">
+                <div class="image-upload" id="image-upload"> <!--action="http://localhost:5000/fileUpload"-->
                     <form method="post" id="post" enctype="multipart/form-data">
                         <label class="piclabel" for="choosefile">
                             👉 사진 업로드 (클릭) 👈
@@ -107,9 +108,12 @@
 <!--        </div>-->
 
     </div>
-    <div class="card-deck">
+    <div class="each_plog">
+        <div class="card-deck">
 
+        </div>
     </div>
+
 <!--    <div class="plogs">-->
 <!--        <div class="each_plog">-->
 <!--            <div class="image-show" id="image-show"></div>-->

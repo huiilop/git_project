@@ -1,8 +1,12 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory, abort
+
 import requests
 import datetime
+import os
 from bs4 import BeautifulSoup
 app = Flask(__name__)
+
+# app.config['images']="c:/client/img/"
 
 from pymongo import MongoClient
 client = MongoClient('localhost', 27017)
@@ -24,6 +28,20 @@ def home():
 def index():
     return render_template('index.html')
 
+
+# @app.route('/fileUpload', methods=['post'])
+# def upload_image():
+#     f=request.files['file']
+#     f.save(app.config['images']+f.filename)
+#     return
+#
+# @app.route('/get-image/<image_names>')
+# def get_image(image_name):
+#     try:
+#         return send_from_directory(app.config['images'],filename=image_name, as_attachment=True)
+#     except FileNotFoundError:
+#         abort(404)
+
 @app.route('/logPost', methods=['POST'])
 def upload_log():
     # f=request.files['file']
@@ -39,7 +57,6 @@ def upload_log():
     # with open(filename_receive, 'rb') as f:
     #     contents=Binary(f.read())
 
-
     # imageID = fs.put(contents, filename=filename_receive)
 
     doc={
@@ -47,6 +64,7 @@ def upload_log():
         'tag':tag_receive,
         'content':content_receive,
         'picture':filename_receive
+        # 'img':img
         # 'position':posi_receive,
         # 'picture':pic_receive
     }
