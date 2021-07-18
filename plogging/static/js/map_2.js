@@ -1,210 +1,265 @@
-//아래 위치에 지도 생성
-var container = document.getElementById('newmap');
-var options = {
-    center: new kakao.maps.LatLng(33.450701, 126.570667),
-    level: 3
-};
-var map = new kakao.maps.Map(container, options);
+// from flask import Flask, render_template, request, jsonify, send_from_directory, abort
+//
+// import requests
+// import datetime
+// import os
+// from bs4 import BeautifulSoup
+// app = Flask(__name__)
+//
+// # app.config['images']="c:/client/img/"
+//
+// from pymongo import MongoClient
+// client = MongoClient('localhost', 27017)
+// db = client.plogging
+// # fs=gridfs.GridFS(db)
+//
+// headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+// # data = requests.get('',headers=headers)
+//
+// # soup = BeautifulSoup(data.text, 'html.parser')
+//
+// ## 포스팅 API 포함된 페이지
+// @app.route('/')
+// @app.route('/main.html')
+// def home():
+//     return render_template('main.html')
+//
+// @app.route('/index.html')
+// def index():
+//     return render_template('index.html')
+//
+//
+// # @app.route('/fileUpload', methods=['post'])
+// # def upload_image():
+// #     f=request.files['file']
+// #     f.save(app.config['images']+f.filename)
+// #     return
+// #
+// # @app.route('/get-image/<image_names>')
+// # def get_image(image_name):
+// #     try:
+// #         return send_from_directory(app.config['images'],filename=image_name, as_attachment=True)
+// #     except FileNotFoundError:
+// #         abort(404)
+//
+// @app.route('/logPost', methods=['POST'])
+// def upload_log():
+//     # f=request.files['file']
+//     # f.save('static/uploads/'+f.filename)
+//     title_receive = request.form['title_give']
+//     tag_receive = request.form['tag_give']
+//     content_receive = request.form['cont_give']
+//     # src_receive=request.form['src_give']
+//     filename_receive=request.form['filename_give']
+//     # posi_receive = request.form['posi_give']
+//     # pic_receive = request.form['pic_give']
+//
+//     # with open(filename_receive, 'rb') as f:
+//     #     contents=Binary(f.read())
+//
+//     # imageID = fs.put(contents, filename=filename_receive)
+//
+//     doc={
+//         'title':title_receive,
+//         'tag':tag_receive,
+//         'content':content_receive,
+//         'picture':filename_receive
+//         # 'img':img
+//         # 'position':posi_receive,
+//         # 'picture':pic_receive
+//     }
+//     db.plogging.insert_one(doc)
+//     return jsonify({'msg':'플로그 기록 완료!'})
+//
+// @app.route('/logPost', methods=['GET'])
+// def read_logs():
+//     logs=list(db.plogging.find({},{'_id':False}))
+//     return jsonify({'all_logs':logs})
+//
+// # 날씨 전달해주기
+// @app.route('/weather', methods=['GET'])
+// def save_weather():
+//     vilage_weather_url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?"
+//     service_key = "IIAWO3kOcOOz3GXcA68FlABIiRgR1BLNA15kaKab0PxYeLMV5AV3mS%2Fq%2BExXQR4U6kR6QAn4MfCnkUyxFHimxA%3D%3D"
+//     today = datetime.datetime.today()
+//     base_date = today.strftime("%Y%m%d")  # "20200214" == 기준 날짜
+//     base_time = "0800"  # 날씨 값
+//     nx = "60"
+//     ny = "128"
+//     payload = "serviceKey=" + service_key + "&" + \
+//               "dataType=json" + "&" + \
+//               "base_date=" + base_date + "&" + \
+//               "base_time=" + base_time + "&" + \
+//               "nx=" + nx + "&" + \
+//               "ny=" + ny
+//     # 값 요청
+//     r = requests.get(vilage_weather_url + payload)
+//     items = r.json().get('response').get('body').get('items')
+//
+//     data = dict()
+//     data['date'] = base_date
+//     weather_data = dict()
+//     for item in items['item']:
+//         # 기온
+//         if item['category'] == 'TMP':
+//             weather_data['기온'] = item['fcstValue']
+//
+//         # 기상상태
+//         if item['category'] == 'PTY':
+//
+//             weather_code = item['fcstValue']
+//
+//             if weather_code == '1':
+//                 weather_state = '비'
+//             elif weather_code == '2':
+//                 weather_state = '비/눈'
+//             elif weather_code == '3':
+//                 weather_state = '눈'
+//             elif weather_code == '4':
+//                 weather_state = '소나기'
+//             else:
+//                 weather_state = '맑음'
+//
+//             # weather_data['code'] = weather_code
+//             weather_data['기상상황'] = weather_state
+//     weather_data['날짜']=base_date
+//     data['weather']=weather_data
+//
+//     return jsonify({'hourlyweather': data['weather']})
+//
+// if __name__ == '__main__':
+//     app.run('0.0.0.0', port=5000, debug=True)
+//
 
-// 장소 검색 객체를 생성합니다
-var ps = new kakao.maps.services.Places();
-// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+// var submit=document.getElementById("submitButton");
+// submit.onclick=showImage();
+// $('#toHome').change(function (){
+//    document.location.href=$('#fashome').val();
+// });
 
-// 키워드로 장소를 검색합니다
-var search=document.getElementById("searchBtn");
-search.onclick=searchPlaces;
-
-// 키워드 검색을 요청하는 함수입니다
-function searchPlaces() {
-    var keyword = document.getElementById('keyword').value;
-    if (!keyword.replace(/^\s+|\s+$/g, '')) {
-        alert('키워드를 입력해주세요!');
-        return false;
-    }
-    // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-    ps.keywordSearch( keyword, placesSearchCB);
-}
-// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
-function placesSearchCB(data, status, pagination) {
-    if (status === kakao.maps.services.Status.OK) {
-        // 정상적으로 검색이 완료됐으면
-        // 검색 목록과 마커를 표출합니다
-        displayPlaces(data);
-        // 페이지 번호를 표출합니다
-        displayPagination(pagination);
-    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        alert('검색 결과가 존재하지 않습니다.');
-        return;
-    } else if (status === kakao.maps.services.Status.ERROR) {
-        alert('검색 결과 중 오류가 발생했습니다.');
-        return;
-    }
-}
-// 검색 결과 목록과 마커를 표출하는 함수입니다
-function displayPlaces(places) {
-    var listEl = document.getElementById('placesList'),
-        menuEl = document.getElementById('menu_wrap'),
-        fragment = document.createDocumentFragment(),
-        bounds = new kakao.maps.LatLngBounds(),
-        listStr = '';
-    // 검색 결과 목록에 추가된 항목들을 제거합니다
-    removeAllChildNods(listEl);
-    // 지도에 표시되고 있는 마커를 제거합니다
-    removeMarker();
-    for ( var i=0; i<places.length; i++ ) {
-        // 마커를 생성하고 지도에 표시합니다
-        var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-            marker = addMarker(placePosition, i),
-            itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-        // LatLngBounds 객체에 좌표를 추가합니다
-        bounds.extend(placePosition);
-        // 마커와 검색결과 항목에 mouseover 했을때
-        // 해당 장소에 인포윈도우에 장소명을 표시합니다
-        // mouseout 했을 때는 인포윈도우를 닫습니다
-        (function(marker, title) {
-            kakao.maps.event.addListener(marker, 'mouseover', function() {
-                displayInfowindow(marker, title);
-            });
-            kakao.maps.event.addListener(marker, 'mouseout', function() {
-                infowindow.close();
-            });
-            itemEl.onmouseover =  function () {
-                displayInfowindow(marker, title);
-            };
-            itemEl.onmouseout =  function () {
-                infowindow.close();
-            };
-        })(marker, places[i].place_name);
-        fragment.appendChild(itemEl);
-    }
-    // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
-    listEl.appendChild(fragment);
-    menuEl.scrollTop = 0;
-    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-    map.setBounds(bounds);
-}
-// 검색결과 항목을 Element로 반환하는 함수입니다
-function getListItem(index, places) {
-    var el = document.createElement('li'),
-        itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
-            '<div class="info">' +
-            '   <h5>' + places.place_name + '</h5>';
-    if (places.road_address_name) {
-        itemStr += '    <span>' + places.road_address_name + '</span>' +
-            '   <span class="jibun gray">' +  places.address_name  + '</span>';
-    } else {
-        itemStr += '    <span>' +  places.address_name  + '</span>';
-    }
-    itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-        '</div>';
-    el.innerHTML = itemStr;
-    el.className = 'item';
-    return el;
-}
-// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-function addMarker(position, idx, title) {
-    var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
-        imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
-        imgOptions =  {
-            spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-            spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-            offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-        },
-        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
-        marker = new kakao.maps.Marker({
-            position: position, // 마커의 위치
-            image: markerImage
-        });
-    marker.setMap(map); // 지도 위에 마커를 표출합니다
-    markers.push(marker);  // 배열에 생성된 마커를 추가합니다
-    return marker;
-}
-// 지도 위에 표시되고 있는 마커를 모두 제거합니다
-function removeMarker() {
-    for ( var i = 0; i < markers.length; i++ ) {
-        markers[i].setMap(null);
-    }
-    markers = [];
-}
-// 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
-function displayPagination(pagination) {
-    var paginationEl = document.getElementById('pagination'),
-        fragment = document.createDocumentFragment(),
-        i;
-    // 기존에 추가된 페이지번호를 삭제합니다
-    while (paginationEl.hasChildNodes()) {
-        paginationEl.removeChild (paginationEl.lastChild);
-    }
-    for (i=1; i<=pagination.last; i++) {
-        var el = document.createElement('a');
-        el.href = "#";
-        el.innerHTML = i;
-        if (i===pagination.current) {
-            el.className = 'on';
-        } else {
-            el.onclick = (function(i) {
-                return function() {
-                    pagination.gotoPage(i);
-                }
-            })(i);
-        }
-        fragment.appendChild(el);
-    }
-    paginationEl.appendChild(fragment);
-}
-// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
-// 인포윈도우에 장소명을 표시합니다
-function displayInfowindow(marker, title) {
-    var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-
-    infowindow.setContent(content);
-    infowindow.open(map, marker);
-}
-// 검색결과 목록의 자식 Element를 제거하는 함수입니다
-function removeAllChildNods(el) {
-    while (el.hasChildNodes()) {
-        el.removeChild(el.lastChild);
-    }
-}
-
-// HTML5의 geolocation으로 사용할 수 있는지 확인
-if (navigator.geolocation){
-    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-    navigator.geolocation.getCurrentPosition(function(position){
-        var lat = position.coords.latitude,
-            lon = position.coords.longitude;
-        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-            message = '<div style="padding:5px;">현재 위치</div>'; // 인포윈도우에 표시될 내용입니다
-
-        // 마커와 인포윈도우를 표시합니다
-        displayMarker(locPosition, message);
-    });
-}
-else{
-    var locPositon = new kakao.map.LatLng(33.450701, 126.570667),
-        message = 'geolocation을 사용할수 없어요..'
-
-    displayMarker(locPosition, message);
-}
-
-// 지도에 마커와 인포윈도우를 표시하는 함수
-function displayMarker(locPosition, message) {
-    // 마커를 생성합니다
-    var marker = new kakao.maps.Marker({
-        map: map,
-        position: locPosition
-    });
-    var iwContent = message, // 인포윈도우에 표시할 내용
-        iwRemoveable = true;
-    // 인포윈도우를 생성합니다
-    var infowindow = new kakao.maps.InfoWindow({
-        content : iwContent,
-        removable : iwRemoveable
-    });
-    // 인포윈도우를 마커위에 표시
-    infowindow.open(map, marker);
-    // 지도 중심좌표를 접속위치로 변경
-    map.setCenter(locPosition);
-}
+// $(document).ready(function () {
+//     get_weather();
+//     getPost();
+// });
+//
+// function showImage(name){
+//     var newImage=document.getElementById(name).lastElementChild;
+//     // var fileName=document.getElementById('fileName').textContent
+//
+//     newImage.style.visibility = "visible";
+//
+//     //document.getElementById("image-upload").style.visibility="hidden";
+//     // document.getElementById('fileName').textContent=null;
+//
+//
+//
+//     // postingPost(newImage, fileName);
+// }
+//
+// function loadFile(input) {
+//     var file = input.files[0];
+//
+//     //file의 이름을 가져와서 fileName이라는 id 가진 요소에 넣어준다.
+//     var name = document.getElementById('fileName');
+//     name.textContent = file.name;
+//
+//     //newImage라는 이름의 img 태그를 만든후, 여기 들어갈 수 있는 값을 img형식으로 제한한다.
+//     var newImage = document.createElement('img');
+//     newImage.setAttribute("class", "img");
+//     //file의 URL을 가져와서, 위에서 만든 newImage의 src로 넣어준다.
+//     source=URL.createObjectURL(file);
+//     newImage.src = source
+//     //newImage의 스타일
+//     newImage.style.width = "70%";
+//     newImage.style.height = "70%";
+//     //newImage.style.visibility = "hidden";
+//
+//     // newImage를 html에 지정된 위치(id가 ~인 곳)의 자식으로 추가한다.
+//     var container=document.getElementById(name.textContent);
+//     container.append(newImage);
+//
+//     newImage.style.objectFit = "contain";
+//     document.getElementById(name.textContent).style.visibility = "hidden";
+// }
+//
+// function postingPost(){
+//     let title= $('#title').val()
+//     let tag=$('#tag').text()
+//     let content=$('#content').val()
+//     let fileName=$('#fileName').text()
+//
+//     var newImage=document.getElementById(fileName).lastElementChild;
+//     newImage.style.visibility = "visible";
+//
+//     $.ajax({
+//         type:"POST",
+//         url: "/logPost",
+//         data: {title_give:title, tag_give:tag,cont_give:content, filename_give:fileName},
+//         success: function (response){
+//             alert(response["msg"]);
+//             window.location.reload()
+//         }
+//     })
+// }
+//
+// function getPost(){
+//     document.getElementById('fileName').textContent=null;
+//
+//     $.ajax({
+//         type:"GET",
+//         url: "/logPost",
+//         data:{},
+//         success: function (response){
+//             let logs=response['all_logs']
+//             for (let i=0;i<logs.length;i++){
+//                 let title=logs[i]['title']
+//                 let tag=logs[i]['tag']
+//                 let content=logs[i]['content']
+//                 let picture=logs[i]['picture']
+//                 // let img=logs[i]['img']
+//                 temp_html=`<div class="card" style="width: 18rem;">
+//                                 <img class="card-img-top" id="${picture}" alt="">
+//                                 <div class="card-body">
+//                                   <h5 class="card-title">${title}</h5>
+//                                   <p class="card-text">${content}</p>
+//                                   <p class="card-text"><small class="text-muted">${tag}</small></p>
+//                                 </div>
+//                             </div>`
+//                 $('.card-deck').append(temp_html)
+//             }
+//         }
+//     })
+//
+//         // `<div class="a_plog">
+//         //             <h3>제목</h3>
+//         //             <h4>${title}</h4>
+//         //             <h3>태그</h3>
+//         //             <h4>${tag}</h4>
+//         //             <h3>내용</h3>
+//         //             <h4>${content}</h4>
+//         //         </div>`
+//
+// }
+//
+//
+// function get_weather() {
+//     // 날씨 API 연결
+//     $.ajax({
+//         type: "GET",
+//         url: "/weather",
+//         data: {},
+//         success: function (responses) {
+//             let response=responses['hourlyweather']
+//             // for (let i=0;i<response.length;i++){
+//             let tempa = response['기온']
+//             let weastat = response['기상상황']
+//             let date =response['날짜']
+//
+//             temp_html=`<h3> 기온 : ${tempa}'C 날씨 : ${weastat} </h3>`
+//             // $(".headImg").append(temp_html)
+//             $(".show_weather").append(temp_html)
+//             // $('#tag').append(`<div id='datetag'>${date}</div>`)
+//             $('#tag').text(`${date}의 P-Log`)
+//         }
+//     })
+// }

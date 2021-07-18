@@ -9,16 +9,18 @@ $(document).ready(function () {
     getPost();
 });
 
-function showImage(name){
-    var newImage=document.getElementById(name).lastElementChild;
-    // var fileName=document.getElementById('fileName').textContent
+function showImage(){
+    var newImage=document.getElementById('image-show').lastElementChild;
+    var fileName=document.getElementById('fileName').textContent
 
     newImage.style.visibility = "visible";
 
     //document.getElementById("image-upload").style.visibility="hidden";
-    // document.getElementById('fileName').textContent=null;
+    document.getElementById('fileName').textContent=null;
 
-
+    //newImage를 html에 지정된 위치(id가 ~인 곳)의 자식으로 추가한다.
+    // var container=document.getElementById("image-show");
+    // container.append(newImage);
 
     // postingPost(newImage, fileName);
 }
@@ -40,24 +42,16 @@ function loadFile(input) {
     newImage.style.width = "70%";
     newImage.style.height = "70%";
     //newImage.style.visibility = "hidden";
-
-    // newImage를 html에 지정된 위치(id가 ~인 곳)의 자식으로 추가한다.
-    var container=document.getElementById(name.textContent);
-    container.append(newImage);
-
     newImage.style.objectFit = "contain";
-    document.getElementById(name.textContent).style.visibility = "hidden";
+    // document.getElementById("post").style.visibility = "hidden";
 }
 
 function postingPost(){
+
     let title= $('#title').val()
     let tag=$('#tag').text()
     let content=$('#content').val()
     let fileName=$('#fileName').text()
-
-    var newImage=document.getElementById(fileName).lastElementChild;
-    newImage.style.visibility = "visible";
-
     $.ajax({
         type:"POST",
         url: "/logPost",
@@ -83,9 +77,9 @@ function getPost(){
                 let tag=logs[i]['tag']
                 let content=logs[i]['content']
                 let picture=logs[i]['picture']
-                // let img=logs[i]['img']
-                temp_html=`<div class="card" style="width: 18rem;">
-                                <img class="card-img-top" id="${picture}" alt="">
+
+                temp_html=`<div class="card">
+                                <img class="card-img-top" src="" alt="">
                                 <div class="card-body">
                                   <h5 class="card-title">${title}</h5>
                                   <p class="card-text">${content}</p>
